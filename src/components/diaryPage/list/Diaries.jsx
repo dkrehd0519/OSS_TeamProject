@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import getDiaryList from "../../apis/getDiaries";
+import getDiaryList from "../../../apis/getDiaries";
 
 function Diaries() {
   const [diaries, setDiaries] = useState([]);

@@ -11,7 +11,7 @@ import RainIcon from "../../assets/icon/storm.png";
 import SunIcon from "../../assets/icon/sun.png";
 import CloudIcon from "../../assets/icon/weather.png";
 import SearchIcon from "@mui/icons-material/Search";
-import SearchCity from "../../apis/SearchCity";
+import { SearchCity } from "../../apis/SearchCity";
 import { useSetRecoilState } from "recoil";
 
 function Contents() {

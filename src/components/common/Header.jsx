@@ -11,10 +11,24 @@ function Header() {
         <Logo>Weather Diary</Logo>
         <h3
           onClick={() => {
+            navigate(`/`);
+          }}
+        >
+          홈 화면
+        </h3>
+        <h3
+          onClick={() => {
             navigate(`/list`);
           }}
         >
           일기장
+        </h3>
+        <h3
+          onClick={() => {
+            navigate(`/WeatherList`);
+          }}
+        >
+          전국 날씨
         </h3>
       </LeftContainer>
       <Weather />
