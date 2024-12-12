@@ -1,37 +1,75 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Weather from "../../apis/Weather";
 import { useNavigate } from "react-router-dom";
 
 function Header() {
   const navigate = useNavigate();
+  const [weatherData, setWeatherData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchWeather = async () => {
+      setLoading(true); // 데이터 fetch 시작 시 로딩 상태 true
+      try {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const data = await Weather(lat, lon);
+            setWeatherData({
+              city: data.name,
+              weather: data.weather[0].description,
+              temperature: data.main.temp,
+              iconUrl: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
+            });
+            setError(null);
+            setLoading(false); // 성공 시 로딩 상태 해제
+          },
+          (geoError) => {
+            console.error("Error getting location:", geoError);
+            setError("위치 정보를 가져오는데 실패했습니다.");
+            setLoading(false); // 에러 시에도 로딩 상태 해제
+          }
+        );
+      } catch (error) {
+        console.error("Error fetching weather data:", error);
+        setError("날씨 정보를 가져오는데 실패했습니다.");
+        setLoading(false); // 에러 시에도 로딩 상태 해제
+      }
+    };
+
+    fetchWeather();
+  }, []);
+
   return (
     <Wrapper>
       <LeftContainer>
         <Logo>Weather Diary</Logo>
-        <h3
-          onClick={() => {
-            navigate(`/`);
-          }}
-        >
-          홈 화면
-        </h3>
-        <h3
-          onClick={() => {
-            navigate(`/list`);
-          }}
-        >
-          일기장
-        </h3>
-        <h3
-          onClick={() => {
-            navigate(`/WeatherList`);
-          }}
-        >
-          전국 날씨
-        </h3>
+        <h3 onClick={() => navigate(`/`)}>홈 화면</h3>
+        <h3 onClick={() => navigate(`/list`)}>일기장</h3>
+        <h3 onClick={() => navigate(`/WeatherList`)}>전국 날씨</h3>
       </LeftContainer>
-      <Weather />
+      <WeatherWrapper>
+        {loading ? (
+          <Message>Loading 중...</Message>
+        ) : error ? (
+          <Message>{error}</Message>
+        ) : weatherData ? (
+          <>
+            <WeatherContainer>
+              <div>
+                날씨: {weatherData.weather} / {weatherData.temperature}°C
+              </div>
+              <div>City: {weatherData.city}</div>
+            </WeatherContainer>
+            <img src={weatherData.iconUrl} alt="Weather Icon" style={{ width: "50px", height: "50px" }} />
+          </>
+        ) : (
+          <Message>날씨 데이터를 불러오지 못했습니다.</Message>
+        )}
+      </WeatherWrapper>
     </Wrapper>
   );
 }
@@ -67,10 +105,30 @@ const Logo = styled.div`
   align-items: center;
 `;
 
-// const RightContainer = styled.div`
+// const RightContainer = styled.div
 
-// `
+//
 
-// const LeftContainer = styled.div`
+// const LeftContainer = styled.div
 
-// `
+//
+
+const WeatherWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+`;
+
+const WeatherContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+`;
+
+const Message = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+`;

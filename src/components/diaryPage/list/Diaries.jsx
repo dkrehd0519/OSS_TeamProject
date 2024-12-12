@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import getDiaryList from "../../../apis/getDiaries";
+import { useNavigate } from "react-router-dom";
 
 function Diaries() {
+  const navigate = useNavigate();
   const [diaries, setDiaries] = useState([]);
 
   useEffect(() => {
@@ -19,20 +21,27 @@ function Diaries() {
 
   return (
     <Wrapper>
-      <CreateDiaryBtn>
-        <h3>일기쓰기</h3>
-      </CreateDiaryBtn>
+      <BtnWrapper>
+        <Title>
+          <h1>일기장</h1>
+        </Title>
+        <CreateDiaryBtn>
+          <h3 onClick={() => navigate(`/createDiary/`)}>일기쓰기</h3>
+        </CreateDiaryBtn>
+      </BtnWrapper>
       <DiaryContainer>
-        {diaries.map((diary, index) => (
-          <Diary key={index}>
-            <h2>{diary.title}</h2>
-            <p>날짜: {diary.date}</p>
-            <p>글쓴이: {diary.author}</p>
-            <p>날씨: {diary.weather}</p>
-            <p>위치: {diary.location}</p>
-            <p>기분: {diary.mood}</p>
-          </Diary>
-        ))}
+        <DiaryWrapper>
+          {diaries.map((diary, index) => (
+            <Diary key={index} onClick={() => navigate(`/diaryDetail/${diary.id}`)}>
+              <h2>{diary.title}</h2>
+              <p>날짜: {diary.date}</p>
+              <p>글쓴이: {diary.author}</p>
+              <p>날씨: {diary.weather}</p>
+              <p>위치: {diary.location}</p>
+              <p>기분: {diary.mood}</p>
+            </Diary>
+          ))}
+        </DiaryWrapper>
       </DiaryContainer>
     </Wrapper>
   );
@@ -41,9 +50,18 @@ function Diaries() {
 export default Diaries;
 
 const Wrapper = styled.div`
-  padding: 100px;
+  padding-top: 50px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+`;
+
+const BtnWrapper = styled.div`
+  width: 1224px;
+`;
+
+const Title = styled.div`
+  text-align: center;
 `;
 
 const CreateDiaryBtn = styled.div`
@@ -55,24 +73,42 @@ const CreateDiaryBtn = styled.div`
   border-radius: 10px;
   padding: 0 20px;
   background-color: #f9d72f;
-  margin-left: 40px;
+  margin-left: auto;
+  margin-right: 10px;
+  cursor: pointer;
 `;
 
 const DiaryContainer = styled.div`
+  margin-top: 20px;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
+const DiaryWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin-top: 20px;
-  justify-content: center;
+  width: 1224px;
 `;
 
 const Diary = styled.div`
-  width: 300px;
-  height: 340px;
+  width: 222px;
+  height: 280px;
   display: flex;
   flex-direction: column;
   border-radius: 20px;
-  border: 1px solid #f9d72f;
-  margin-right: 25px;
+  border: 2px solid #f9d72f;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 30px;
   padding: 30px;
-  margin-bottom: 25px;
+  cursor: pointer;
+
+  --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+
+  &:hover {
+    --tw-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
 `;

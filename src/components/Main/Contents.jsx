@@ -16,6 +16,7 @@ import { useSetRecoilState } from "recoil";
 
 function Contents() {
   const { weatherType, city, weather, temperature, iconUrl, cloud, wind, time } = useRecoilValue(weatherState);
+  const [isError, setIsError] = useState(false);
 
   console.log("time: " + time, cloud, wind);
 
@@ -27,10 +28,10 @@ function Contents() {
     Cloudy,
   };
 
-  const [selectedBackground, setSelectedBackground] = useState(Clear);
+  const [selectedBackground, setSelectedBackground] = useState();
 
   useEffect(() => {
-    const newBackground = backgroundImages[weatherType] || Clear;
+    const newBackground = backgroundImages[weatherType];
     setSelectedBackground(newBackground);
   }, [weatherType]);
 
@@ -91,7 +92,7 @@ function Contents() {
         try {
           const fetchedSearch = await SearchCity(searchQuery);
           const { id, main } = fetchedSearch.weather[0];
-          let weatherType = "Clear";
+          let weatherType = "";
 
           if (id >= 200 && id <= 232) {
             weatherType = "Rainy"; // 뇌우
@@ -116,8 +117,10 @@ function Contents() {
             wind: fetchedSearch.wind.speed,
             time: fetchedSearch.dt,
           });
+          setIsError(false);
         } catch (error) {
           console.error("검색한 일지를 가져오는데 실패함: ", error);
+          setIsError(true); // 에러 상태 활성화
         }
       };
       fetchSearchedDiary();
@@ -139,7 +142,7 @@ function Contents() {
         <SearchIcon />
         <input
           className="search-bar"
-          placeholder="한국의 도시를 영어로 검색해보세요.    ex) seoul"
+          placeholder={isError ? "잘못된 도시명을 입력하셨습니다." : "한국의 도시를 영어로 검색해보세요.    ex) seoul"}
           value={searchQuery}
           onChange={(e) => {
             setSearchQuery(e.target.value);

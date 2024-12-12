@@ -12,7 +12,7 @@ export default function FilterSelect({ filterValue, setFilterValue }) {
 
   return (
     <div>
-      <Box sx={{ minWidth: 120, marginBottom: "20px", width: "20%" }}>
+      <Box sx={{ minWidth: 120, marginBottom: "20px" }}>
         <FormControl fullWidth>
           <InputLabel id="filter-select-label">시, 군</InputLabel>
           <Select

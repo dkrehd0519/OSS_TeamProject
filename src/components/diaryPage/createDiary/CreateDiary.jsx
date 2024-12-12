@@ -1,58 +1,73 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import TextField from "@mui/material/TextField";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
+import { useRecoilValue } from "recoil";
+import { fixedWeatherState } from "../../../recoil/atom";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import styled from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
-import getDiaryDetail from "../../../apis/getDiaryDetail";
-import updateDiary from "../../../apis/updateDiary";
+import createDiary from "../../../apis/createDiary";
+import { useNavigate } from "react-router-dom";
 
-function UpdateDiary() {
-  const params = useParams();
-  const navigate = useNavigate();
-
-  const [diaryDetail, setDiaryDetail] = useState({});
-
+function CreateDiary() {
   // State 관리
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
   const [mood, setMood] = useState("");
-  const [selectedWeather, setSelectedWeather] = useState("");
+  const { weatherType, city } = useRecoilValue(fixedWeatherState);
+  const [selectedWeather, setSelectedWeather] = useState(() => {
+    switch (weatherType) {
+      case "Clear":
+        return "맑음";
+      case "Cloudy":
+        return "흐림";
+      case "Rainy":
+        return "비";
+      case "Snowy":
+        return "눈";
+      default:
+        return "맑음";
+    }
+  });
+  const navigate = useNavigate();
 
-  // Fetch Diary Detail
-  useEffect(() => {
-    const fetchDiaryDetail = async () => {
-      try {
-        const fetchedDiaryDetail = await getDiaryDetail(params.id);
-        setDiaryDetail(fetchedDiaryDetail);
+  // Ref 관리
+  const titleRef = useRef(null);
+  const authorRef = useRef(null);
+  const contentRef = useRef(null);
+  const moodRef = useRef(null);
+  const locationRef = useRef(null);
 
-        // Set initial values from diaryDetail
-        setTitle(fetchedDiaryDetail.title);
-        setAuthor(fetchedDiaryDetail.author);
-        setContent(fetchedDiaryDetail.content);
-        setMood(fetchedDiaryDetail.mood);
-        setSelectedDate(dayjs(fetchedDiaryDetail.date));
-        setSelectedWeather(fetchedDiaryDetail.weather);
-      } catch (error) {
-        console.error("Error fetching diary detail", error);
-      }
-    };
-    fetchDiaryDetail();
-  }, [params.id]);
+  // 데이터 합치기
+  const formDataToSend = {
+    title,
+    author,
+    date: selectedDate.format("YYYY-MM-DD"),
+    content,
+    mood,
+    location: city,
+    weather: selectedWeather,
+  };
 
-  // 날씨 선택 핸들러
-  const handleWeatherChange = (event) => {
-    setSelectedWeather(event.target.value);
+  // API 호출
+  const saveDiary = async () => {
+    try {
+      await createDiary(formDataToSend);
+      alert("일지가 저장되었습니다!");
+      navigate(`/list`);
+    } catch (error) {
+      console.error("일지 저장 실패: ", error);
+      alert("일지 저장에 실패했습니다.");
+    }
   };
 
   // Validation 체크
@@ -73,43 +88,30 @@ function UpdateDiary() {
       alert("오늘의 기분을 입력해주세요 !");
       return false;
     }
+    if (!city) {
+      alert("위치를 입력해주세요 !");
+      return false;
+    }
     return true;
+  };
+
+  // 날씨 선택 핸들러
+  const handleWeatherChange = (event) => {
+    setSelectedWeather(event.target.value);
   };
 
   // 저장 버튼 핸들러
   const handleSubmit = () => {
     const isValid = handleValidation();
     if (isValid) {
-      const formDataToSend = {
-        title,
-        author,
-        date: selectedDate.format("YYYY-MM-DD"),
-        content,
-        mood,
-        location: diaryDetail.location,
-        weather: selectedWeather,
-      };
-      saveDiary(formDataToSend);
-    }
-  };
-
-  const saveDiary = async (formDataToSend) => {
-    const isConfirmed = window.confirm("수정하시겠어요?");
-    if (!isConfirmed) return;
-    try {
-      await updateDiary(formDataToSend, params.id);
-      alert("일지가 저장되었습니다!");
-      navigate(`/diaryDetail/${params.id}`);
-    } catch (error) {
-      console.error("일지 저장 실패: ", error);
-      alert("일지 저장에 실패했습니다.");
+      saveDiary();
     }
   };
 
   return (
     <Wrapper>
       <Title>
-        <h1>일기 수정</h1>
+        <h1>일기 쓰기</h1>
       </Title>
       <Container>
         <CustomTextField
@@ -119,6 +121,7 @@ function UpdateDiary() {
           fullWidth
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          ref={titleRef}
         />
         <DoubleLine>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -154,6 +157,7 @@ function UpdateDiary() {
             sx={{ width: "400px", marginTop: "8px" }}
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
+            ref={authorRef}
           />
         </DoubleLine>
         <CustomTextField
@@ -164,6 +168,7 @@ function UpdateDiary() {
           fullWidth
           value={content}
           onChange={(e) => setContent(e.target.value)}
+          ref={contentRef}
         />
         <CustomTextField
           id="mood"
@@ -172,14 +177,15 @@ function UpdateDiary() {
           fullWidth
           value={mood}
           onChange={(e) => setMood(e.target.value)}
+          ref={moodRef}
         />
         <CustomTextField
           id="location"
           label="위치"
           variant="outlined"
           fullWidth
-          value={diaryDetail.location || ""}
-          onChange={(e) => setDiaryDetail({ ...diaryDetail, location: e.target.value })}
+          defaultValue={city}
+          ref={locationRef}
         />
 
         <Box sx={{ minWidth: 120, marginBottom: "20px" }}>
@@ -220,7 +226,7 @@ function UpdateDiary() {
   );
 }
 
-export default UpdateDiary;
+export default CreateDiary;
 
 // Styled components
 const Wrapper = styled.div`

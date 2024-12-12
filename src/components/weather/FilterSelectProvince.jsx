@@ -1,4 +1,3 @@
-// FilterSelectProvince.jsx
 import * as React from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -8,6 +7,19 @@ import Select from "@mui/material/Select";
 import cities from "../../json/cities.json"; // 실제 city 데이터 import
 
 export default function FilterSelectProvince({ filterProvinceValue, setFilterProvinceValue }) {
+  // 한글/영어 매핑 테이블
+  const provinceMapping = {
+    "Gyeonggi Province": "경기도",
+    "South Gyeongsang Province": "경상남도",
+    "North Gyeongsang Province": "경상북도",
+    "South Chungcheong Province": "충청남도",
+    "North Chungcheong Province": "충청북도",
+    "South Jeolla Province": "전라남도",
+    "North Jeolla Province": "전라북도",
+    "Jeju Province": "제주도",
+    "Gangwon Province": "강원도",
+  };
+
   // cities에서 unique province 목록 추출
   const provinceSet = new Set();
   cities.forEach((city) => {
@@ -23,7 +35,7 @@ export default function FilterSelectProvince({ filterProvinceValue, setFilterPro
   };
 
   return (
-    <Box sx={{ minWidth: 120, marginBottom: "20px", width: "20%", marginLeft: "10px" }}>
+    <Box sx={{ minWidth: 120, marginBottom: "20px", marginLeft: "10px" }}>
       <FormControl fullWidth>
         <InputLabel id="filter-province-select-label">지역 선택</InputLabel>
         <Select
@@ -38,7 +50,7 @@ export default function FilterSelectProvince({ filterProvinceValue, setFilterPro
             .filter((p) => p !== "all")
             .map((prov, idx) => (
               <MenuItem key={idx} value={prov}>
-                {prov}
+                {provinceMapping[prov] || prov} {/* UI에 한국어 표시 */}
               </MenuItem>
             ))}
         </Select>
