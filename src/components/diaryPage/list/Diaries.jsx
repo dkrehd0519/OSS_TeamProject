@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import getDiaryList from "../../../apis/getDiaries";
 import { useNavigate } from "react-router-dom";
+import Clear from "../../../assets/background/Clear.webp";
+import Rainy from "../../../assets/background/Rainy.webp";
+import Snowy from "../../../assets/background/Snowy.webp";
+import Cloudy from "../../../assets/background/Cloudy.webp";
 
 function Diaries() {
   const navigate = useNavigate();
@@ -20,7 +24,15 @@ function Diaries() {
   }, []);
 
   return (
-    <Wrapper>
+    <Wrapper
+    // style={{
+    //   width: "100vw",
+    //   height: "100vh",
+    //   backgroundImage: `url(${Clear})`,
+    //   backgroundSize: "cover",
+    //   backgroundPosition: "center",
+    // }}
+    >
       <BtnWrapper>
         <Title>
           <h1>일기장</h1>
@@ -93,7 +105,6 @@ const DiaryWrapper = styled.div`
 
 const Diary = styled.div`
   width: 222px;
-  height: 280px;
   display: flex;
   flex-direction: column;
   border-radius: 20px;
