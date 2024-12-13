@@ -21,7 +21,6 @@ function UpdateDiary() {
 
   const [diaryDetail, setDiaryDetail] = useState({});
 
-  // State 관리
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -29,14 +28,12 @@ function UpdateDiary() {
   const [mood, setMood] = useState("");
   const [selectedWeather, setSelectedWeather] = useState("");
 
-  // Fetch Diary Detail
   useEffect(() => {
     const fetchDiaryDetail = async () => {
       try {
         const fetchedDiaryDetail = await getDiaryDetail(params.id);
         setDiaryDetail(fetchedDiaryDetail);
 
-        // Set initial values from diaryDetail
         setTitle(fetchedDiaryDetail.title);
         setAuthor(fetchedDiaryDetail.author);
         setContent(fetchedDiaryDetail.content);
@@ -50,12 +47,10 @@ function UpdateDiary() {
     fetchDiaryDetail();
   }, [params.id]);
 
-  // 날씨 선택 핸들러
   const handleWeatherChange = (event) => {
     setSelectedWeather(event.target.value);
   };
 
-  // Validation 체크
   const handleValidation = () => {
     if (!title) {
       alert("제목을 입력해주세요 !");
@@ -76,7 +71,6 @@ function UpdateDiary() {
     return true;
   };
 
-  // 저장 버튼 핸들러
   const handleSubmit = () => {
     const isValid = handleValidation();
     if (isValid) {
@@ -222,7 +216,6 @@ function UpdateDiary() {
 
 export default UpdateDiary;
 
-// Styled components
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;

@@ -11,7 +11,7 @@ function Header() {
 
   useEffect(() => {
     const fetchWeather = async () => {
-      setLoading(true); // 데이터 fetch 시작 시 로딩 상태 true
+      setLoading(true);
       try {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
@@ -25,18 +25,18 @@ function Header() {
               iconUrl: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
             });
             setError(null);
-            setLoading(false); // 성공 시 로딩 상태 해제
+            setLoading(false);
           },
           (geoError) => {
             console.error("Error getting location:", geoError);
             setError("위치 정보를 가져오는데 실패했습니다.");
-            setLoading(false); // 에러 시에도 로딩 상태 해제
+            setLoading(false);
           }
         );
       } catch (error) {
         console.error("Error fetching weather data:", error);
         setError("날씨 정보를 가져오는데 실패했습니다.");
-        setLoading(false); // 에러 시에도 로딩 상태 해제
+        setLoading(false);
       }
     };
 
@@ -105,14 +105,6 @@ const Logo = styled.div`
   align-items: center;
   cursor: pointer;
 `;
-
-// const RightContainer = styled.div
-
-//
-
-// const LeftContainer = styled.div
-
-//
 
 const WeatherWrapper = styled.div`
   display: flex;

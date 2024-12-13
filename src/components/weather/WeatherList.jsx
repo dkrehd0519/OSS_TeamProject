@@ -25,8 +25,8 @@ import FilterSelectProvince from "./FilterSelectProvince";
 
 const WeatherList = () => {
   const [rows, setRows] = useState([]);
-  const [filterValue, setFilterValue] = useState("all"); // 시/군/광역 필터
-  const [filterProvinceValue, setFilterProvinceValue] = useState("all"); // province 필터
+  const [filterValue, setFilterValue] = useState("all");
+  const [filterProvinceValue, setFilterProvinceValue] = useState("all");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [loading, setLoading] = useState(true);
@@ -42,7 +42,6 @@ const WeatherList = () => {
 
   const filterCities = () => {
     return cities.filter((city) => {
-      // 1. 타입 필터 적용
       let typeCondition = true;
       if (filterValue === "city") {
         typeCondition = city.type === "City";
@@ -55,7 +54,6 @@ const WeatherList = () => {
           city.type === "Special Self-Governing City";
       }
 
-      // 2. province 필터 적용
       let provinceCondition = true;
       if (filterProvinceValue !== "all") {
         provinceCondition = city.province === filterProvinceValue;
@@ -75,7 +73,7 @@ const WeatherList = () => {
       setPage(0);
       setLoading(false);
     };
-    // filterValue, filterProvinceValue 둘 다 바뀌면 다시 fetch
+
     fetchData();
   }, [filterValue, filterProvinceValue]);
 

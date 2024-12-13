@@ -4,10 +4,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import cities from "../../json/cities.json"; // 실제 city 데이터 import
+import cities from "../../json/cities.json";
 
 export default function FilterSelectProvince({ filterProvinceValue, setFilterProvinceValue }) {
-  // 한글/영어 매핑 테이블
   const provinceMapping = {
     "Gyeonggi Province": "경기도",
     "South Gyeongsang Province": "경상남도",
@@ -20,7 +19,6 @@ export default function FilterSelectProvince({ filterProvinceValue, setFilterPro
     "Gangwon Province": "강원도",
   };
 
-  // cities에서 unique province 목록 추출
   const provinceSet = new Set();
   cities.forEach((city) => {
     if (city.province && city.province.trim() !== "") {
@@ -28,7 +26,7 @@ export default function FilterSelectProvince({ filterProvinceValue, setFilterPro
     }
   });
 
-  const provinceOptions = ["all", ...provinceSet]; // all + unique province list
+  const provinceOptions = ["all", ...provinceSet];
 
   const handleChange = (event) => {
     setFilterProvinceValue(event.target.value);

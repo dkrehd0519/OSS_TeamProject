@@ -20,7 +20,6 @@ function Contents() {
 
   console.log("time: " + time, cloud, wind);
 
-  // 배경 이미지를 상태 값에 따라 매핑
   const backgroundImages = {
     Clear,
     Rainy,
@@ -50,7 +49,7 @@ function Contents() {
     const kstDate = new Date(date.getTime() + 60 * 60 * 1000);
 
     const year = kstDate.getFullYear();
-    const month = (kstDate.getMonth() + 1).toString().padStart(2, "0"); // 월은 0부터 시작하므로 +1 필요
+    const month = (kstDate.getMonth() + 1).toString().padStart(2, "0");
     const day = kstDate.getDate().toString().padStart(2, "0");
 
     const hours = kstDate.getHours().toString().padStart(2, "0");
@@ -66,7 +65,6 @@ function Contents() {
   const cloudiness = getCloudiness(cloud);
   const windiness = getWindiness(wind);
 
-  // 판별 함수 정의
   function getCloudiness(clouds) {
     if (clouds === 0) return "없음";
     if (clouds <= 25) return "적음";
@@ -95,17 +93,17 @@ function Contents() {
           let weatherType = "";
 
           if (id >= 200 && id <= 232) {
-            weatherType = "Rainy"; // 뇌우
+            weatherType = "Rainy";
           } else if (id >= 300 && id <= 321) {
-            weatherType = "Rainy"; // 이슬비
+            weatherType = "Rainy";
           } else if (id >= 500 && id <= 531) {
-            weatherType = "Rainy"; // 비
+            weatherType = "Rainy";
           } else if (id >= 600 && id <= 622) {
-            weatherType = "Snowy"; // 눈
+            weatherType = "Snowy";
           } else if (id >= 801 && id <= 804) {
-            weatherType = "Cloudy"; // 흐림
+            weatherType = "Cloudy";
           } else if (id === 800) {
-            weatherType = "Clear"; // 맑음
+            weatherType = "Clear";
           }
           setWeatherState({
             weatherType,
@@ -120,7 +118,7 @@ function Contents() {
           setIsError(false);
         } catch (error) {
           console.error("검색한 일지를 가져오는데 실패함: ", error);
-          setIsError(true); // 에러 상태 활성화
+          setIsError(true);
         }
       };
       fetchSearchedDiary();

@@ -17,7 +17,6 @@ import createDiary from "../../../apis/createDiary";
 import { useNavigate } from "react-router-dom";
 
 function CreateDiary() {
-  // State 관리
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -40,14 +39,12 @@ function CreateDiary() {
   });
   const navigate = useNavigate();
 
-  // Ref 관리
   const titleRef = useRef(null);
   const authorRef = useRef(null);
   const contentRef = useRef(null);
   const moodRef = useRef(null);
   const locationRef = useRef(null);
 
-  // 데이터 합치기
   const formDataToSend = {
     title,
     author,
@@ -58,7 +55,6 @@ function CreateDiary() {
     weather: selectedWeather,
   };
 
-  // API 호출
   const saveDiary = async () => {
     try {
       await createDiary(formDataToSend);
@@ -70,7 +66,6 @@ function CreateDiary() {
     }
   };
 
-  // Validation 체크
   const handleValidation = () => {
     if (!title) {
       alert("제목을 입력해주세요 !");
@@ -95,12 +90,10 @@ function CreateDiary() {
     return true;
   };
 
-  // 날씨 선택 핸들러
   const handleWeatherChange = (event) => {
     setSelectedWeather(event.target.value);
   };
 
-  // 저장 버튼 핸들러
   const handleSubmit = () => {
     const isValid = handleValidation();
     if (isValid) {
@@ -228,7 +221,6 @@ function CreateDiary() {
 
 export default CreateDiary;
 
-// Styled components
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
