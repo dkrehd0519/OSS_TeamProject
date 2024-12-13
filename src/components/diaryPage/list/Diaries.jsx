@@ -27,8 +27,8 @@ function Diaries() {
           <Title>
             <h1>일기장</h1>
           </Title>
-          <CreateDiaryBtn>
-            <h3 onClick={() => navigate(`/createDiary/`)}>일기쓰기</h3>
+          <CreateDiaryBtn onClick={() => navigate(`/createDiary/`)}>
+            <h3>일기쓰기</h3>
           </CreateDiaryBtn>
         </BtnWrapper>
         <DiaryContainer>
