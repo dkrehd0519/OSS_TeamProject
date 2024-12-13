@@ -21,7 +21,7 @@ function Diaries() {
 
   return (
     <>
-      <InfoText>☀️날씨별로 일기에 다른 배경화면이 나와요 ! 작성후 확인해보세요 😄</InfoText>
+      <InfoText>☀️ 날씨별로 일기에 다른 배경화면이 나와요 ! 작성후 확인해보세요 😄</InfoText>
       <Wrapper>
         <BtnWrapper>
           <Title>
