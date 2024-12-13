@@ -46,7 +46,7 @@ function Header() {
   return (
     <Wrapper>
       <LeftContainer>
-        <Logo>Weather Diary</Logo>
+        <Logo onClick={() => navigate(`/`)}>Weather Diary</Logo>
         <h3 onClick={() => navigate(`/`)}>홈 화면</h3>
         <h3 onClick={() => navigate(`/list`)}>일기장</h3>
         <h3 onClick={() => navigate(`/WeatherList`)}>전국 날씨</h3>
@@ -103,6 +103,7 @@ const Logo = styled.div`
   font-size: 30px;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 // const RightContainer = styled.div

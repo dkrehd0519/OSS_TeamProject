@@ -165,6 +165,9 @@ const PutBtn = styled.div`
   cursor: pointer;
   --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  &:hover {
+    background-color: hsl(240deg 33.3% 10% / 90%);
+  }
 `;
 
 const DeleteBtn = styled.div`
@@ -181,4 +184,7 @@ const DeleteBtn = styled.div`
   cursor: pointer;
   --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  &:hover {
+    background-color: hsla(14 100% 57.1% / 90%);
+  }
 `;

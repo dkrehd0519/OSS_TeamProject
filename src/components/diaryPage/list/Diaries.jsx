@@ -20,33 +20,36 @@ function Diaries() {
   }, []);
 
   return (
-    <Wrapper>
-      <BtnWrapper>
-        <Title>
-          <h1>일기장</h1>
-        </Title>
-        <CreateDiaryBtn>
-          <h3 onClick={() => navigate(`/createDiary/`)}>일기쓰기</h3>
-        </CreateDiaryBtn>
-      </BtnWrapper>
-      <DiaryContainer>
-        <DiaryWrapper>
-          {diaries
-            .slice()
-            .reverse()
-            .map((diary, index) => (
-              <Diary key={index} onClick={() => navigate(`/diaryDetail/${diary.id}`)}>
-                <h2>{diary.title}</h2>
-                <p>날짜: {diary.date}</p>
-                <p>글쓴이: {diary.author}</p>
-                <p>날씨: {diary.weather}</p>
-                <p>위치: {diary.location}</p>
-                <p>기분: {diary.mood}</p>
-              </Diary>
-            ))}
-        </DiaryWrapper>
-      </DiaryContainer>
-    </Wrapper>
+    <>
+      <InfoText>☀️날씨별로 일기에 다른 배경화면이 나와요 ! 작성후 확인해보세요 😄</InfoText>
+      <Wrapper>
+        <BtnWrapper>
+          <Title>
+            <h1>일기장</h1>
+          </Title>
+          <CreateDiaryBtn>
+            <h3 onClick={() => navigate(`/createDiary/`)}>일기쓰기</h3>
+          </CreateDiaryBtn>
+        </BtnWrapper>
+        <DiaryContainer>
+          <DiaryWrapper>
+            {diaries
+              .slice()
+              .reverse()
+              .map((diary, index) => (
+                <Diary key={index} onClick={() => navigate(`/diaryDetail/${diary.id}`)}>
+                  <h2>{diary.title}</h2>
+                  <p>날짜: {diary.date}</p>
+                  <p>글쓴이: {diary.author}</p>
+                  <p>날씨: {diary.weather}</p>
+                  <p>위치: {diary.location}</p>
+                  <p>기분: {diary.mood}</p>
+                </Diary>
+              ))}
+          </DiaryWrapper>
+        </DiaryContainer>
+      </Wrapper>
+    </>
   );
 }
 
@@ -56,6 +59,19 @@ const Wrapper = styled.div`
   padding-top: 50px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  margin-bottom: 50px;
+`;
+
+const InfoText = styled.div`
+  width: 100vw;
+  height: 70px;
+  font-size: 20px;
+  font-weight: 900;
+  color: hsla(207 89.8% 53.9% / 1);
+  background-color: hsl(207deg 89.8% 53.9% / 10%);
+  display: flex;
+  justify-content: center;
   align-items: center;
 `;
 
@@ -79,6 +95,12 @@ const CreateDiaryBtn = styled.div`
   margin-left: auto;
   margin-right: 10px;
   cursor: pointer;
+  --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  &:hover {
+    background-color: hsla(50 94.3% 47.8% / 1);
+    border-color: hsla(50 94.3% 47.8% / 1);
+  }
 `;
 
 const DiaryContainer = styled.div`

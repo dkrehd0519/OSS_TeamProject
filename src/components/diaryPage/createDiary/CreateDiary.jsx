@@ -234,6 +234,7 @@ const Wrapper = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 50px;
 `;
 
 const Title = styled.div`
@@ -281,4 +282,8 @@ const SubmitBtn = styled.div`
   margin-left: auto;
   font-weight: 900;
   cursor: pointer;
+  &:hover {
+    background-color: hsla(50 94.3% 47.8% / 1);
+    border-color: hsla(50 94.3% 47.8% / 1);
+  }
 `;
