@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import getDiaryDetail from "../../../apis/getDiaryDetail";
@@ -12,6 +12,17 @@ function DiaryDetail() {
   const params = useParams();
   const [diaryDetail, setDiaryDetail] = useState([]);
   const navigate = useNavigate();
+
+  const contentRef = useRef(null);
+  const [isContentOverflow, setIsContentOverflow] = useState(false);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      const contentHeight = contentRef.current.scrollHeight;
+      const windowHeight = window.innerHeight;
+      setIsContentOverflow(contentHeight > windowHeight);
+    }
+  }, [diaryDetail]);
 
   useEffect(() => {
     const fetchDiarieDetail = async () => {
@@ -52,14 +63,17 @@ function DiaryDetail() {
     <Wrapper
       style={{
         width: "100vw",
-        height: "100vh",
         backgroundImage: `url(${selectedBackground})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         zIndex: "-3",
       }}
     >
-      <Container>
+      <Container
+        style={{
+          marginTop: isContentOverflow ? "0" : "30px",
+        }}
+      >
         <ContentWrapper>
           <h1>{diaryDetail.title}</h1>
           <AuthorContainer>
@@ -85,7 +99,11 @@ function DiaryDetail() {
           </MainContent>
         </ContentWrapper>
       </Container>
-      <BtnContainer>
+      <BtnContainer
+        style={{
+          marginBottom: isContentOverflow ? "0" : "50px",
+        }}
+      >
         <PutBtn onClick={() => navigate(`/updateDiary/${params.id}`)}>수정</PutBtn>
         <DeleteBtn onClick={deleteDiaryDetail}>삭제</DeleteBtn>
       </BtnContainer>
@@ -100,6 +118,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  min-height: 100vh; /* 최소 높이를 100vh로 설정 */
+  height: fit-content; /* 콘텐츠가 크면 콘텐츠에 맞춰 조정 */
 `;
 
 const Container = styled.div`
