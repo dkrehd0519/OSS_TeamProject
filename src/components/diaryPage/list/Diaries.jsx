@@ -2,10 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import getDiaryList from "../../../apis/getDiaries";
 import { useNavigate } from "react-router-dom";
-import Clear from "../../../assets/background/Clear.webp";
-import Rainy from "../../../assets/background/Rainy.webp";
-import Snowy from "../../../assets/background/Snowy.webp";
-import Cloudy from "../../../assets/background/Cloudy.webp";
 
 function Diaries() {
   const navigate = useNavigate();
@@ -24,15 +20,7 @@ function Diaries() {
   }, []);
 
   return (
-    <Wrapper
-    // style={{
-    //   width: "100vw",
-    //   height: "100vh",
-    //   backgroundImage: `url(${Clear})`,
-    //   backgroundSize: "cover",
-    //   backgroundPosition: "center",
-    // }}
-    >
+    <Wrapper>
       <BtnWrapper>
         <Title>
           <h1>일기장</h1>
@@ -43,16 +31,19 @@ function Diaries() {
       </BtnWrapper>
       <DiaryContainer>
         <DiaryWrapper>
-          {diaries.map((diary, index) => (
-            <Diary key={index} onClick={() => navigate(`/diaryDetail/${diary.id}`)}>
-              <h2>{diary.title}</h2>
-              <p>날짜: {diary.date}</p>
-              <p>글쓴이: {diary.author}</p>
-              <p>날씨: {diary.weather}</p>
-              <p>위치: {diary.location}</p>
-              <p>기분: {diary.mood}</p>
-            </Diary>
-          ))}
+          {diaries
+            .slice()
+            .reverse()
+            .map((diary, index) => (
+              <Diary key={index} onClick={() => navigate(`/diaryDetail/${diary.id}`)}>
+                <h2>{diary.title}</h2>
+                <p>날짜: {diary.date}</p>
+                <p>글쓴이: {diary.author}</p>
+                <p>날씨: {diary.weather}</p>
+                <p>위치: {diary.location}</p>
+                <p>기분: {diary.mood}</p>
+              </Diary>
+            ))}
         </DiaryWrapper>
       </DiaryContainer>
     </Wrapper>
